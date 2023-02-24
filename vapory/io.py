@@ -102,7 +102,7 @@ def render_povstring(string, outfile=None, height=None, width=None,
     if display_in_ipython:
         outfile = '__temp_ipython__.png'
 
-    cmd = [POVRAY_BINARY, pov_file]
+    cmd = [POVRAY_BINARY, "/EXIT", "/RENDER", pov_file]
     if height is not None: cmd.append('+H%d'%height)
     if width is not None: cmd.append('+W%d'%width)
     if quality is not None: cmd.append('+Q%d'%quality)
@@ -116,10 +116,10 @@ def render_povstring(string, outfile=None, height=None, width=None,
         for dir in includedirs:
             cmd.append('+L%s'%dir)
     cmd.append("Output_File_Type=%s"%format_type)
-    cmd.append("+O%s"%outfile)
+    cmd.append("+O%s"%outfile)    
     process = subprocess.Popen(cmd, stderr=subprocess.PIPE,
                                     stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE)
+                                    stdout=subprocess.PIPE,shell=True)
 
     out, err = process.communicate(string.encode('ascii'))
 
